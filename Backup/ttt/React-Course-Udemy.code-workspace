@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "path": "../attachments/04 Essentials Deep Dive/07-tic-tac-toe-starting-project"
+    },
+    {
+      "path": "../../../My_ProjWebSite/My_Book/React-Course-Note"
+    },
+    {
+      "path": "../code/04 Essentials Deep Dive/15-prefer-computed-values"
+    }
+  ],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "07-tic-tac-toe-starting-project"
+  }
+}

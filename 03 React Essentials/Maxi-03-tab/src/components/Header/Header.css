@@ -1,0 +1,57 @@
+/* 
+作用：使 <header> 内的行内元素（如 <h1>、<p>）和行内块元素（如 <img>）在水平方向上居中。
+机制：text-align: center 影响 <header> 的直接子元素（如 <img>、<h1>、<p>），使其内容在容器内水平居中。
+
+*/
+
+/* 
+作用：设置 <header> 的上下外边距为 3rem，左右外边距为 0。
+间接辅助居中：通过 margin: 0 auto（未使用）可以使块级元素本身居中，但这里未设置，<header> 的宽度由父容器（<div> 或 body）决定。
+在你的页面中，<header> 可能被 main 或全局样式约束，结合 text-align: center 实现内容居中。
+*/
+
+/* 
+MJ_NOTE
+居中局限：text-align: center 只影响内容，未使 <header> 本身居中（需 margin: auto 和 width）。
+
+header {
+  text-align: center;
+  margin: 3rem auto;
+  width: 90%;
+  max-width: 50rem;
+}
+*/
+header {
+  text-align: center;
+
+  margin: 3rem 0;
+}
+
+/* 
+object-fit: cover 确保图片填满容器，辅助居中视觉效果。
+*/
+header img {
+  height: 5rem;
+  width: 10rem;
+  object-fit: cover;
+}
+
+header h1 {
+  margin: 0;
+
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 5rem;
+  background: linear-gradient(40deg, #ea00ff, #ea00ff, #03d5ff, #03d5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+}
+
+header p {
+  margin: 0;
+
+  font-size: 1.25rem;
+  color: #8964b0;
+  font-family: "Roboto Condensed", sans-serif;
+}

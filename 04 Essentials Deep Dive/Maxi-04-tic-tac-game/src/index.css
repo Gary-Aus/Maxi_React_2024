@@ -1,0 +1,580 @@
+@import url("https://fonts.googleapis.com/css2?family=Caprasimo&family=Roboto+Slab:wght@400;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+/* 
+----------------------------------------------------------------
+----------------------------------------------------------------
+
+*/
+html {
+  font-family: "Roboto Slab", sans-serif;
+  line-height: 1.5;
+
+  color: #ebe7ef;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: radial-gradient(
+      circle at top,
+      rgba(241, 210, 70, 0.98),
+      rgba(250, 176, 103, 0.87)
+    ),
+    url("bg-pattern-dark.png");
+
+  background-repeat: repeat;
+  background-size: 100% 100%, 30% 30%, 100% 100%;
+
+  min-height: 110rem;
+}
+
+header {
+  text-align: center;
+}
+
+header img {
+  width: 8rem;
+
+  object-fit: contain;
+
+  margin: 3rem auto 1rem auto;
+
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
+}
+
+h1 {
+  font-family: "Caprasimo", cursive;
+  font-size: 3rem;
+
+  margin: 0 auto 3rem auto;
+
+  color: #3f3b00;
+}
+
+/* 
+----------------------------------------------------------------
+----------------------------------------------------------------
+game-container : 主棋盘，包括两个 PLAYER , 九宫格棋盘，
+                 还有 Game Over 对话框 ；
+
+
+*/
+#game-container {
+  /* 设置容器的最大宽度为45rem（相对于根元素字体大小的单位） */
+  max-width: 45rem;
+
+  /* 上下外边距3rem，左右自动外边距（实现水平居中） MJ_NOTE */
+  margin: 3rem auto;
+
+  /* 内边距2rem（内容与边框之间的空间） */
+  padding: 2rem;
+
+  border-radius: 6px;
+
+  /* 背景使用从#383624到#282617的线性渐变 */
+  background: linear-gradient(#383624, #282617);
+
+  /* 盒子阴影：水平偏移0，垂直偏移0，模糊半径20px，半透明黑色 */
+  /* 设置一个从顶部到底部的颜色渐变效果。 */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+
+  /* 设置为相对定位 */ /* MJ_NOTE */
+  position: relative;
+}
+
+#players {
+  /* 移除列表项默认的标记符号（如圆点、数字等） MJ_NOTE */
+  /* 使列表显示为无标记的纯内容 */
+  list-style: none;
+
+  padding: 0;
+  margin: 1rem 0;
+
+  display: flex;
+
+  /* Flexbox主轴（水平方向）对齐方式：居中 */
+  justify-content: center;
+
+  /* Flexbox交叉轴（垂直方向）对齐方式：居中 */
+  align-items: center;
+  gap: 2rem;
+}
+
+/* 
+MJ_NOTE
+将每个 <li> 元素变成 flex 容器
+使其直接子元素成为 flex 项目，可以方便地进行对齐和排列
+*/
+#players li {
+  display: flex;
+
+  /* 子元素在交叉轴（垂直方向）上居中对齐 */
+  align-items: center;
+
+  /* 设置每个列表项占据父容器(#players)宽度的50% MJ_NOTE */
+  width: 50%;
+
+  /* 设置2px透明边框（通常为交互效果预留） */
+  /* 
+    MJ_NOTE 
+    transparent 等同于 rgba(0, 0, 0, 0)（透明度为 0 的黑色）
+    它不会显示任何颜色，完全透出背景内容
+  */
+  border: 2px solid transparent;
+}
+
+#players.highlight-player li.active {
+  border-color: #f6e35a;
+
+  animation: pulse 2s infinite ease-in-out;
+}
+
+#players.highlight-player li.active .player-name,
+#players.highlight-player li.active .player-symbol {
+  color: #f6e35a;
+}
+
+#players button {
+  width: 3rem;
+
+  border: none;
+  background: none;
+  color: #c3ba78;
+  font-size: 0.9rem;
+
+  cursor: pointer;
+
+  transition: color 0.2s;
+
+  padding: 0.5rem 0.25rem;
+
+  text-align: center;
+}
+
+#players button:hover {
+  color: #f8ca31;
+}
+
+.player {
+  border: 2px solid transparent;
+  /* border: 2px solid red; */
+
+  padding: 0.5rem;
+
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.player-name {
+  display: inline-block;
+
+  width: 10rem;
+
+  font-size: 1rem;
+  color: #e1dec7;
+  text-transform: uppercase;
+
+  margin: 0;
+  padding: 0.5rem;
+
+  border-radius: 4px;
+
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.player input {
+  font: inherit;
+  font-size: 1rem;
+
+  width: 10rem;
+
+  border: none;
+
+  padding: 0.5rem;
+
+  animation: pulse-text 2s infinite;
+
+  background-color: #46432f;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.player-symbol {
+  margin-left: 1rem;
+
+  font-size: 1rem;
+
+  color: #e1dec7;
+}
+
+/* 
+----------------------------------------------------------------
+----------------------------------------------------------------
+
+*/
+ol {
+  list-style: none;
+
+  margin: 0;
+  padding: 0;
+}
+
+/* 未使用 ??? */
+#pre-game {
+  text-align: center;
+}
+
+/* 未使用 ??? */
+#pre-game button {
+  cursor: pointer;
+
+  background: none;
+  color: #f8c031;
+  color: red;
+
+  border: none;
+
+  font-family: "Caprasimo", cursive;
+  font-size: 4rem;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
+
+  animation: pulse-text-size 2s infinite ease-out;
+}
+
+/* 
+----------------------------------------------------------------
+----------------------------------------------------------------
+
+*/
+
+/* 
+flex-wrap 控制 Flex 项目是否换行。 
+nowrap（单行）、wrap（换行）、wrap-reverse（反向换行）。
+*/
+#game-board {
+  display: flex;
+
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+
+  margin: 3rem 0;
+  padding: 0;
+}
+
+#game-board ol {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+#game-board button {
+  width: 8rem;
+  height: 8rem;
+
+  padding: 1rem;
+
+  border: none;
+  background: #aca788;
+  color: #3f3b00;
+
+  font-size: 5rem;
+  font-family: "Caprasimo", cursive;
+
+  cursor: pointer;
+}
+
+/* GameBoard.jsx 简化后对应的 css 修改 ：
+
+3 列，每列 8rem 
+#game-board {
+  display: grid;
+
+  grid-template-columns: repeat(3, 8rem); 
+  gap: 2rem;
+  justify-content: center;
+  
+  margin: 3rem 0;
+}
+
+#game-board button {
+  width: 8rem;
+  height: 8rem;
+  
+  border: none;
+  background: #aca788;
+  color: #3f3b00;
+  font-size: 5rem;
+  
+  cursor: pointer;
+  font-family: 'Caprasimo', cursive;
+  
+  padding: 1rem;
+}
+*/
+
+/* 
+----------------------------------------------------------------
+----------------------------------------------------------------
+
+1. position: absolute 和覆盖范围
+
+position: absolute：
+#game-over 是相对于其最近的定位祖先元素（#game-container）进行绝对定位的。
+因为 #game-container 有 position: relative：
+这意味着 #game-over 会相对于 #game-container 的边界定位。
+
+top: 0; left: 0; width: 100%; height: 100%;：
+#game-over 的尺寸被设置为覆盖整个 #game-container，
+包括其中的 Player 组件（#players）和 GameBoard。
+
+结果：
+当 GameOver 渲染时，它在 DOM 层级上覆盖了 #players 和 #game-board，
+成为这些元素上方的视觉层。
+
+
+2. background-color: rgba(40, 38, 23, 0.95)
+半透明背景：
+rgba(40, 38, 23, 0.95) 是一个接近不透明的深色背景（透明度 5%）。
+这不仅在视觉上遮挡了下方的 Player 和 GameBoard，而且作为一个实体元素，拦截了鼠标事件。
+
+结果：
+点击 #game-over 区域时，事件不会传递到下层的 #players 中的 “Edit” 按钮，
+因为 #game-over 是一个完整的 DOM 元素，覆盖了所有底层内容。
+
+3. 事件拦截（默认行为）
+CSS 中没有显式设置 pointer-events: none，因此 #game-over 默认是可交互的（pointer-events: auto）。
+当你点击 #game-over 区域时，浏览器将点击事件发送给 #game-over，而不是下层的 #players 或 #game-board。
+为什么 “Edit” 无响应：
+“Edit” 按钮位于 #players 中，而 #players 被 #game-over 完全覆盖。
+点击事件被 #game-over 捕获，handleEditClick 永远不会触发。
+
+4. z-index 的隐式作用
+虽然你的 CSS 中没有显式定义 #game-over 或 #players 的 z-index，
+但由于 #game-over 是 #game-container 的子元素，
+且渲染顺序晚于 #players（在 JSX 中 <GameOver> 在 <ol id="players"> 之后），
+它的堆叠顺序天然高于 #players。
+结果：
+#game-over 在层级上位于 #players 上方，进一步确保它拦截所有交互。
+*/
+#game-over {
+  /* MJ_NOTE */
+  position: absolute;
+  /* position: fixed; */
+
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* width: 100vw; */
+  /* height: 100vh; */
+
+  display: flex;
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(40, 38, 23, 0.95);
+
+  animation: pop-in 0.5s cubic-bezier(0.68, -0.55, 0.65, 0.52) forwards;
+
+  /* MJ_NOTE 打开之后，底层的按钮就可以点击响应了 !!!MJ_NOTE */
+  /* pointer-events: none; */
+}
+
+#game-over h2 {
+  margin: 0;
+
+  font-family: "Caprasimo", cursive;
+  font-size: 4rem;
+  text-align: center;
+  color: #fcd256;
+}
+
+#game-over p {
+  font-size: 2rem;
+  text-align: center;
+
+  color: #e1dec7;
+}
+
+#game-over button {
+  display: block;
+
+  margin: 0 auto;
+  font-size: 1.5rem;
+  background: none;
+  border: 2px solid #fcd256;
+  color: #fcd256;
+
+  padding: 0.5rem 1rem;
+
+  border-radius: 4px;
+
+  cursor: pointer;
+
+  transition: all 0.2s, color 0.2s;
+
+  box-shadow: 0 0 8px rgba(255, 187, 0, 0.4);
+}
+
+#game-over button:hover {
+  background: #fcd256;
+  color: #3f3b00;
+
+  transform: scale(1.1);
+
+  box-shadow: 0 0 20px rgba(255, 187, 0, 0.8);
+}
+
+/* 
+----------------------------------------------------------------
+----------------------------------------------------------------
+
+*/
+#log {
+  max-width: 20rem;
+
+  color: #3f3b00;
+
+  list-style: none;
+
+  margin: 2rem auto;
+  padding: 0;
+
+  text-align: center;
+}
+
+#log li {
+  margin: 0.75rem;
+
+  border-radius: 4px;
+
+  animation: slide-in-from-left 1s cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+}
+
+#log li.highlighted {
+  background-color: #3f3b00;
+  color: white;
+}
+
+/* 
+----------------------------------------------------------------
+----------------------------------------------------------------
+
+*/
+#game-hints {
+  text-align: center;
+  color: #46432f;
+}
+
+#game-hints h2 {
+  font-family: "Caprasimo", cursive;
+  font-size: 2rem;
+
+  margin: 0;
+}
+
+#game-hints ul {
+  list-style: none;
+
+  padding: 0;
+  margin: 0;
+}
+
+#game-hints button {
+  cursor: pointer;
+
+  border: none;
+  background: transparent;
+  color: #23221f;
+  font: inherit;
+
+  margin-top: 1.5rem;
+}
+
+/* 
+----------------------------------------------------------------
+----------------------------------------------------------------
+
+*/
+@keyframes slide-in-from-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-30%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-text {
+  0% {
+    color: #e1dec7;
+  }
+  50% {
+    color: #9f9d83;
+  }
+  100% {
+    color: #e1dec7;
+  }
+}
+
+@keyframes pulse-text-size {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    border-color: #f6e35a;
+    box-shadow: 0 0 0 0 rgba(246, 227, 90, 0.4);
+  }
+  50% {
+    border-color: #f8c031;
+    box-shadow: 0 0 0 0.5rem rgba(248, 165, 49, 0);
+  }
+  100% {
+    border-color: #f6e35a;
+    box-shadow: 0 0 0 0 rgba(246, 227, 90, 0);
+  }
+}
+
+/* Fancy animation for showing the "Game Over" element */
+@keyframes pop-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}

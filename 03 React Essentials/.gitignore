@@ -1,0 +1,34 @@
+# 忽略所有子项目内 node_modules 目录
+**/node_modules/
+
+# 忽略所有子项目内打包生成目录
+**/dist/
+**/build/
+
+# 忽略所有 .env 环境变量文件
+**/.env
+**/.env.*
+
+# 忽略所有日志文件
+**/*.log
+
+# 忽略 macOS 系统文件
+.DS_Store
+
+# 忽略 VSCode 和 IDE 配置文件
+**/.vscode/
+**/.idea/
+**/*.iml
+
+# 忽略 TypeScript 构建缓存
+**/*.tsbuildinfo
+
+# 忽略 ESLint 缓存
+**/.eslintcache
+
+# 覆盖率测试结果目录
+**/coverage/
+
+# 其他临时/缓存目录
+**/.cache/
+**/*.zip

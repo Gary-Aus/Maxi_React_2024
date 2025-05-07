@@ -1,0 +1,55 @@
+node_modules/
+
+
+# ⚙️ node_modules：依赖目录，不需要提交到 Git
+**/node_modules/
+
+# 📦 打包生成目录（比如 vite、webpack、create-react-app 的）
+/dist/
+/build/
+
+# 📑 环境变量文件，避免泄露密钥
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 📓 日志文件
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# 🍏 macOS 缓存文件
+.DS_Store
+
+# 💾 VSCode 配置目录（如果不希望团队共享）
+.vscode/
+
+# 📜 TypeScript 编译缓存
+*.tsbuildinfo
+
+# 🎛️ eslint 缓存文件
+.eslintcache
+
+# 🖥️ coverage 覆盖率测试结果
+/coverage/
+
+# 🔄 临时打包的压缩包
+*.zip
+
+# 📂 上传的临时文件
+/uploads/
+
+# 📷 图片缓存
+**/.cache/
+
+# 🔍 IDE 配置文件
+.idea/
+*.iml
+
+# 📒 其他可选忽略
+/public/static/
+
